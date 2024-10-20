@@ -3,6 +3,7 @@ import { useState } from "react";
 import SectionTitle from "../Common/SectionTitle";
 import OfferList from "./OfferList";
 import PricingBox from "./PricingBox";
+import Link from "next/link";
 
 const Pricing = () => {
   const [isMonthly, setIsMonthly] = useState(true);
@@ -30,7 +31,10 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="relative px-4 z-10 py-16 md:py-20 lg:py-28">
+    <section
+      id="pricing"
+      className="relative px-4 z-10 py-16 md:py-20 lg:py-28"
+    >
       <div className="container">
         <SectionTitle
           title="Simple and Affordable Token Packages"
@@ -38,66 +42,34 @@ const Pricing = () => {
           center
           width="665px"
         />
-
-        {/* <div className="w-full">
-          <div className="mb-8 flex justify-center md:mb-12 lg:mb-16">
-            <span
-              onClick={() => setIsMonthly(true)}
-              className={`${
-                isMonthly
-                  ? "pointer-events-none text-primary"
-                  : "text-dark dark:text-white"
-              } mr-4 cursor-pointer text-base font-semibold`}
-            >
-              Monthly
-            </span>
-            <div
-              onClick={() => setIsMonthly(!isMonthly)}
-              className="flex cursor-pointer items-center"
-            >
-              <div className="relative">
-                <div className="h-5 w-14 rounded-full bg-[#1D2144] shadow-inner"></div>
-                <div
-                  className={`${
-                    isMonthly ? "" : "translate-x-full"
-                  } shadow-switch-1 absolute left-0 top-[-4px] flex h-7 w-7 items-center justify-center rounded-full bg-primary transition`}
-                >
-                  <span className="active h-4 w-4 rounded-full bg-white"></span>
-                </div>
-              </div>
-            </div>
-            <span
-              onClick={() => setIsMonthly(false)}
-              className={`${
-                isMonthly
-                  ? "text-dark dark:text-white"
-                  : "pointer-events-none text-primary"
-              } ml-4 cursor-pointer text-base font-semibold`}
-            >
-              Yearly
-            </span>
+        <div className="w-full flex justify-center pb-12 ">
+          <div className="shadow-md dark:shadow-white/20 rounded-full py-2 px-4 bg-gradient-to-r from-blue-400 to-red-400  text-neutral-800 dark:text-white w-fit">
+            Get <span className="italic">FREE&nbsp;</span>&nbsp;tokens when you <Link href="/sign-up" className="underline italic font-bold">sign up!</Link>
           </div>
-        </div> */}
-
+        </div>
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           {tokenPackages.map((pkg) => (
             <PricingBox
               key={pkg.name}
               packageName={pkg.name}
-              price={`£${(pkg.price / 100)}`} // Convert pence to pounds
+              price={`£${pkg.price / 100}`} // Convert pence to pounds
               duration="one-time"
               subtitle={`Get ${pkg.bonus}% bonus with this package`}
             >
-              <OfferList text={`Receive ${pkg.amount.toLocaleString()} Tokens`} status="active" />
-              <OfferList text={`Bonus: ${pkg.bonus}%`} status={pkg.bonus ? "active" : "inactive"} />
+              <OfferList
+                text={`Receive ${pkg.amount.toLocaleString()} Tokens`}
+                status="active"
+              />
+              <OfferList
+                text={`Bonus: ${pkg.bonus}%`}
+                status={pkg.bonus ? "active" : "inactive"}
+              />
             </PricingBox>
           ))}
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 z-[-1]">
-       
-      </div>
+      <div className="absolute bottom-0 left-0 z-[-1]"></div>
     </section>
   );
 };

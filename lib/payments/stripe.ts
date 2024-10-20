@@ -89,7 +89,7 @@ export async function handlePaymentSuccess(sessionId: string) {
   }
 
   // Update user's token balance
-  await db.transaction(async (tx) => {
+  await db.transaction(async (tx: any) => {
     await tx
       .update(users)
       .set({
