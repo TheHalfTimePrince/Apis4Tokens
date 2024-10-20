@@ -9,7 +9,7 @@ type PageProps = {
 };
 
 export default async function DocsPage({ params }: PageProps) {
-  const { slug = [] } = await params; // Await params
+  const { slug = [] } = params; // Await params
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
 
