@@ -5,7 +5,7 @@ import { getDocsForSlug } from "@/lib/markdown";
 import { Typography } from "@/components/typography";
 
 type PageProps = {
-  params: { slug: string[] };
+  params: { slug?: string[] };
 };
 
 export default async function DocsPage({ params }: PageProps) {
