@@ -5,12 +5,13 @@ import { getDocsForSlug } from "@/lib/markdown";
 import { Typography } from "@/components/typography";
 
 type PageProps = {
-  params: { slug?: string[] };
+  params: Promise<{ slug?: string[] }>;
 };
 
+
 export default async function DocsPage({ params }: PageProps) {
-  const slug = params.slug || [];
-  const pathName = slug.join("/");
+  const { slug } = await params;
+  const pathName = slug?.join("/") || "";
   const res = await getDocsForSlug(pathName);
 
   if (!res) notFound();
@@ -31,12 +32,11 @@ export default async function DocsPage({ params }: PageProps) {
   );
 }
 
-
 export async function generateMetadata({ params }: PageProps) {
-  const slug = params.slug || [];
-  const pathName = slug.join("/");
+  const { slug } = await params;
+  const pathName = slug?.join("/") || "";
   const res = await getDocsForSlug(pathName);
-  
+
   if (!res) return null;
 
   const { frontmatter } = res;
