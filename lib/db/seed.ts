@@ -67,6 +67,17 @@ async function seed() {
 
     console.log(`Created Stripe product: ${pkg.name}`);
   }
+
+  try {
+    const webhookEndpoint = await stripe.webhookEndpoints.create({
+      enabled_events: ['checkout.session.completed'],
+      url: `${process.env.BASE_URL}/api/stripe/webhook`,
+    });
+    console.log(`Created Stripe webhook endpoint: ${webhookEndpoint.id}`);
+  } catch (error) {
+    console.error('Error creating Stripe webhook endpoint:', error);
+  }
+
 }
 
 seed()

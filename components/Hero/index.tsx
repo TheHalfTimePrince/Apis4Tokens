@@ -21,7 +21,7 @@ const Hero = () => {
         </div>
         <div className="container z-[2]">
           <div className="-mx-4 flex flex-wrap">
-            <div className="w-full px-4">
+            <div className="w-full px-16 md:px-4">
               <div className="mx-auto max-w-[800px] text-center">
                 <h1 className="mb-5 text-3xl font-bold leading-tight text-black  sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">
                   Easy APIs for Developers, Built to Scale 🚀

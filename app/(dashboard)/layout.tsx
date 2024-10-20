@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleIcon, Home, LogOut, Server, User } from 'lucide-react';
+import { Server, Home, LogOut,  User } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,8 +53,8 @@ function Header() {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer size-9 ">
                   <AvatarImage alt={user.name || ''} />
-                  <AvatarFallback className='bg-primary text-white font-bold'>
-                    <User className="h-4 w-4 fill-white"  />
+                  <AvatarFallback className='bg-background font-bold'>
+                    <User className="h-4 w-4 fill-none"  />
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>

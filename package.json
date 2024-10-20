@@ -8,6 +8,7 @@
     "db:seed": "npx tsx lib/db/seed.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "npx tsx lib/db/migrate.ts",
+    "deployWebhook": "npx tsx lib/db/deploy-webhook.ts",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
