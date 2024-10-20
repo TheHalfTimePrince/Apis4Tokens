@@ -9,13 +9,13 @@ type PageProps = {
 };
 
 export default async function DocsPage({ params }: PageProps) {
-  const { slug = [] } = params; // Await params
+  const slug = params.slug || [];
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
 
   if (!res) notFound();
+  
   return (
-    
     <div className="flex  gap-14 ">
       <div className="flex-[3] py-10">
         <Typography>
@@ -33,7 +33,7 @@ export default async function DocsPage({ params }: PageProps) {
 
 
 export async function generateMetadata({ params }: PageProps) {
-  const { slug = [] } =  params; // Await params
+  const slug = params.slug || [];
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
   
