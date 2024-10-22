@@ -57,18 +57,18 @@ pnpm dev
 To create a new API endpoint, use the `apiTemplate` function. Here's an example:
 
 ```typescript
-`// app/api/example/route.ts`
-`import { NextRequest, NextResponse } from 'next/server'`;
-`import { apiTemplate } from '@/lib/easy-api-template'`;
+// app/api/example/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { apiTemplate } from '@/lib/easy-api-template';
 
-`async function exampleLogic(req: NextRequest`) {
-`  const message = "Hello from the API!"`;
-`  return NextResponse.json({ message }, { status: 200` });
+async function exampleLogic(req: NextRequest) {
+  const message = "Hello from the API!";
+  return NextResponse.json({ message }, { status: 200 });
 }
 
-`export const POST = apiTemplate`({
-`  tokenCost: 100, // Cost of this API call in tokens`
-`  logic`: exampleLogic,
+export const POST = apiTemplate({
+  tokenCost: 100, // Cost of this API call in tokens`
+  logic: exampleLogic,
 });
 ```
 
