@@ -26,8 +26,8 @@ This is a starter template for building an API marketplace using **Next.js**. It
 1. Clone the repository:
 
 ```bash
-`git clone` [https://github.com/yourusername/your-repo-name](https://github.com/yourusername/your-repo-name)
-`cd` your-repo-name
+git clone [https://github.com/TheHalfTimePrince/Apis4Tokens](https://github.com/TheHalfTimePrince/Apis4Tokens)
+cd Apis4Tokens
 pnpm install
 ```
 
