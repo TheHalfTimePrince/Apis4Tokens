@@ -24,8 +24,8 @@ const AboutSectionOne = () => {
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
-                title="Built for Developers, Tokens4Api's for All Your Needs."
-                paragraph="Tokens4Api's delivers the tools you need to quickly integrate features like QR code generation, data conversion, and more into your applications. Simplify development with our ready-to-use solutions."
+                title="Built for Developers, Apis4Tokens for All Your Needs."
+                paragraph="Apis4Tokens delivers the tools you need to quickly integrate features like QR code generation, data conversion, and more into your applications. Simplify development with our ready-to-use solutions."
                 mb="44px"
               />
 

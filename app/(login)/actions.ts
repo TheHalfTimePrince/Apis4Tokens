@@ -75,7 +75,7 @@ export const signUp = validatedAction(signUpSchema, async (data) => {
     email,
     passwordHash,
     role: 'member', // Default role
-    tokenBalance: parseInt(process.env.FREE_TOKENS ?? "0"), // Starting token balance
+    tokenBalance: parseInt(process.env.NEXT_PUBLIC_FREE_TOKENS ?? "0"), // Starting token balance
   };
 
   const [createdUser] = await db.insert(users).values(newUser).returning();

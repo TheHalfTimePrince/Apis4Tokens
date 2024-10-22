@@ -4,8 +4,8 @@ This is a starter template for building an API marketplace using **Next.js**. It
 
 ## Features
 
-* Marketing landing page (/)
-* Pricing page (/pricing) connected to Stripe Checkout
+* Landing Page (/)
+* Pricing page connected to Stripe Checkout
 * User dashboard for managing API tokens and creating custom endpoints
 * Token-based system for API usage
 * Email/password authentication with JWTs stored in cookies
