@@ -6,8 +6,41 @@ import { getUser } from '@/lib/db/queries';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'Next.js SaaS Starter',
-  description: 'Get started quickly with Next.js, Postgres, and Stripe.',
+  title: 'Apis4Tokens | Developer-Friendly API Solutions',
+  description: 'Powerful, scalable API endpoints for developers. Pay with tokens per use. Simplify your workflow with our QR code generation and more.',
+  icons: {
+    icon: './favicon.png',
+    shortcut: './favicon.png',
+    apple: './favicon.png',
+  },
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+  ],
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://apis4tokens.com',
+    siteName: 'Apis4Tokens',
+    title: 'Apis4Tokens | Developer-Friendly API Solutions',
+    description: 'Powerful, scalable API endpoints for developers. Pay with tokens per use. Simplify your workflow with our QR code generation and more.',
+    images: [
+      {
+        url: './favicon.png',
+        width: 1200,
+        height: 630,
+        alt: 'Apis4Tokens',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Apis4Tokens | Developer-Friendly API Solutions',
+    description: 'Powerful, scalable API endpoints for developers. Pay with tokens per use. Simplify your workflow with our QR code generation and more.',
+    images: ['./favicon.png'],
+    creator: '@apis4tokens',
+  },
 };
 
 export const viewport: Viewport = {
