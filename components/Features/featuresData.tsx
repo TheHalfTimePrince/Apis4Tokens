@@ -14,7 +14,7 @@ const featuresData: Feature[] = [
     ),
     title: "APIs Tailored for Developers",
     paragraph:
-      "Easy APIs offers endpoints like QR code generation, data conversion, and more, designed specifically for developers to integrate quickly and efficiently.",
+      "Tokens4Api's offers endpoints like QR code generation, data conversion, and more, designed specifically for developers to integrate quickly and efficiently.",
   },
   {
     id: 2,

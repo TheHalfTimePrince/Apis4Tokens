@@ -8,8 +8,8 @@ const Features = () => {
       <section id="features" className="py-16 px-4 md:py-20 lg:py-28">
         <div className="container">
           <SectionTitle
-            title="Key Features of Easy APIs"
-            paragraph="Explore the robust features of Easy APIs, designed to simplify your development process with scalable, customizable, and reliable API solutions."
+            title="Key Features of Tokens4Api's"
+            paragraph="Explore the robust features of Tokens4Api's, designed to simplify your development process with scalable, customizable, and reliable API solutions."
             center
           />
 

@@ -1,0 +1,70 @@
+---
+title: Getting Started
+description: To begin using our API marketplace, follow these simple steps
+---
+
+1. Sign up for an account on our platform.
+2. Purchase tokens or use your free initial balance.
+3. Generate an API key from your dashboard.
+4. Integrate our APIs into your application.
+
+## Creating Your First API Endpoint
+
+Let's walk through the process of creating a new API endpoint using our `apiTemplate` function. We'll use the example API provided in our codebase.
+
+First, let's look at the structure of an API endpoint:
+
+```
+import { NextRequest, NextResponse } from 'next/server';
+import { apiTemplate } from '@/lib/easy-api-template';
+
+async function exampleLogic(req: NextRequest) {
+  // Your custom logic here
+  const message = "Hello from the API!";
+  return NextResponse.json({ message }, { status: 200 });
+}
+
+export const POST = apiTemplate({
+  tokenCost: 100, // Cost of this API call in tokens
+  logic: exampleLogic
+});
+```
+
+This example creates a simple API that returns a "Hello from the API!" message. Here's how you can create your own API endpoint:
+
+1. Create a new file in the `app/api/` directory, e.g., `app/api/my-custom-api/route.ts`.
+2. Import the necessary dependencies and the `apiTemplate` function.
+3. Define your API logic in an async function.
+4. Export the API using the `apiTemplate` function, specifying the token cost.
+
+Here's an example of a custom API that generates a random number:
+
+```
+import { NextRequest, NextResponse } from 'next/server';
+import { apiTemplate } from '@/lib/easy-api-template';
+async function randomNumberLogic(req: NextRequest) {
+const randomNumber = Math.floor(Math.random() 100) + 1;
+return NextResponse.json({ number: randomNumber }, { status: 200 });
+}
+export const POST = apiTemplate({
+tokenCost: 50, // Cost of this API call in tokens
+logic: randomNumberLogic
+});
+```
+
+## Using Your API
+
+To use your newly created API, you'll need to make a POST request with your API key in the authorization header. Here's an example using curl:
+bash
+curl -X POST https://yourdomain.com/api/my-custom-api \
+-H "Authorization: Bearer YOUR_API_KEY"
+
+Replace `YOUR_API_KEY` with the API key you generated from your dashboard.
+
+## Token Usage
+
+Each API call deducts tokens from your account balance. In the example above, each call to the random number API would cost 50 tokens. Make sure you have sufficient tokens in your account to make API calls.
+
+## Conclusion
+
+Congratulations! You've now created your first API endpoint and learned how to use it. As you explore our platform, you'll find many more possibilities for integrating powerful APIs into your applications. Happy coding!

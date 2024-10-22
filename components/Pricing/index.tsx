@@ -33,7 +33,7 @@ const Pricing = () => {
   return (
     <section
       id="pricing"
-      className="relative px-4 z-10 py-16 md:py-20 lg:py-28"
+      className="relative px-4 z-[4] py-16 md:py-20 lg:py-28"
     >
       <div className="container">
         <SectionTitle

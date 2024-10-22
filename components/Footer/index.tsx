@@ -5,7 +5,7 @@ import Link from "next/link";
 const Footer = () => {
   return (
     <>
-      <footer className="relative z-10 bg-white pt-16 dark:bg-gray-dark md:pt-20 lg:pt-24">
+      <footer className="relative z-[4] bg-white pt-16 dark:bg-gray-dark md:pt-20 lg:pt-24">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
@@ -13,21 +13,21 @@ const Footer = () => {
                 <Link href="/" className="mb-8 inline-block">
                   <Image
                     src="/images/logo/logo-2.svg"
-                    alt="Easy APIs Logo"
+                    alt="Tokens4Api's Logo"
                     className="w-full dark:hidden"
                     width={140}
                     height={30}
                   />
                   <Image
                     src="/images/logo/logo.svg"
-                    alt="Easy APIs Logo"
+                    alt="Tokens4Api's Logo"
                     className="hidden w-full dark:block"
                     width={140}
                     height={30}
                   />
                 </Link>
                 <p className="mb-9 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  Easy APIs delivers powerful, easy-to-integrate API solutions for developers, including tools like QR code generation and more.
+                Tokens4Api's delivers powerful, easy-to-integrate API solutions for developers, including tools like QR code generation and more.
                 </p>
                 <div className="flex items-center">
                   {/* Social media links can be added here */}
@@ -141,7 +141,7 @@ const Footer = () => {
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]"></div>
           <div className="py-8">
             <p className="text-center text-base text-body-color dark:text-white">
-              © {new Date().getFullYear()} Easy APIs. All rights reserved.
+              © {new Date().getFullYear()} Tokens4Api's. All rights reserved.
             </p>
           </div>
         </div>

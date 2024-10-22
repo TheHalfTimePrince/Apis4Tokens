@@ -11,29 +11,8 @@ export const ROUTES: EachRoute[] = [
   {
     title: "Getting Started",
     href: "/getting-started",
-    noLink: true,
-    items: [
-      { title: "Introduction", href: "/introduction" },
-      {
-        title: "Installation",
-        href: "/installation",
-        items: [
-          { title: "Laravel", href: "/laravel" },
-          { title: "React", href: "/react" },
-          { title: "Gatsby", href: "/gatsby" },
-        ],
-      },
-    ],
   },
-  {
-    title: "Server Actions",
-    href: "/server-actions",
-    noLink: true,
-    items: [
-      { title: "getSession", href: "/getSession" },
-      { title: "getToken", href: "/getToken" },
-    ],
-  },
+ 
 ];
 
 type Page = { title: string; href: string };
