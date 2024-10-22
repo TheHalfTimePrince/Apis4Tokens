@@ -32,7 +32,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <Server className="h-6 w-6 text-primary" />
-          <span className="ml-2 text-xl font-semibold text-primary-background">Tokens4Api's</span>
+          <span className="ml-2 text-xl font-semibold text-primary-background">Apis4Tokens</span>
         </Link>
         <Link
             href="/docs/getting-started"
