@@ -17,12 +17,19 @@ CREATE TABLE IF NOT EXISTS "token_transactions" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-DROP TABLE "activity_logs";--> statement-breakpoint
-DROP TABLE "invitations";--> statement-breakpoint
-DROP TABLE "team_members";--> statement-breakpoint
-DROP TABLE "teams";--> statement-breakpoint
-ALTER TABLE "users" ADD COLUMN "api_key" varchar(255) NOT NULL;--> statement-breakpoint
-ALTER TABLE "users" ADD COLUMN "token_balance" integer DEFAULT 0 NOT NULL;--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "users" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" varchar(100),
+	"email" varchar(255) NOT NULL,
+	"password_hash" text NOT NULL,
+	"token_balance" integer DEFAULT 1000 NOT NULL,
+	"role" varchar(20) DEFAULT 'member' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"deleted_at" timestamp,
+	CONSTRAINT "users_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "api_keys" ADD CONSTRAINT "api_keys_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
@@ -34,5 +41,3 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
---> statement-breakpoint
-ALTER TABLE "users" ADD CONSTRAINT "users_api_key_unique" UNIQUE("api_key");
