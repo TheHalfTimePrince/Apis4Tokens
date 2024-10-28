@@ -1,6 +1,6 @@
-'use server'
-import { desc, and, eq, isNull } from 'drizzle-orm';
-import { db } from './drizzle';
+"use server";
+import { desc, and, eq, isNull } from "drizzle-orm";
+import { db } from "./drizzle";
 import {
   users,
   tokenTransactions,
@@ -8,27 +8,28 @@ import {
   ApiKey,
   User,
   TokenTransaction,
-} from './schema';
-import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib/auth/session';
-import { createHmac, randomBytes } from 'crypto';
-import { sql } from 'drizzle-orm';
+} from "./schema";
+import { cookies } from "next/headers";
+
+import { createHmac, randomBytes } from "crypto";
+import { sql } from "drizzle-orm";
+import { getAuth } from "@/auth";
 // Function to generate a unique API key
 function generateApiKey(): string {
-  const prefix = 'easyapis_secret_key';
+  const prefix = "easyapis_secret_key";
 
   // Get the current timestamp
   const timestamp = Date.now().toString();
 
   // Generate a 256-bit (32-byte) random value
-  const randomValue = randomBytes(32).toString('hex');
+  const randomValue = randomBytes(32).toString("hex");
 
   // Concatenate timestamp and random value
   const data = `${timestamp}${randomValue}`;
 
   // Create an HMAC using SHA-256 and a secret key
-  const secretKey = process.env.API_KEY_SECRET || 'default_secret';
-  const hmac = createHmac('sha256', secretKey).update(data).digest('hex');
+  const secretKey = process.env.API_KEY_SECRET || "default_secret";
+  const hmac = createHmac("sha256", secretKey).update(data).digest("hex");
 
   // Combine the prefix and the HMAC to form the API key
   const apiKey = `${prefix}_${hmac}`;
@@ -36,7 +37,9 @@ function generateApiKey(): string {
   return apiKey;
 }
 
-export async function getUserTransactions(userId: number): Promise<TokenTransaction[]> {
+export async function getUserTransactions(
+  userId: string
+): Promise<TokenTransaction[]> {
   const transactions = await db
     .select()
     .from(tokenTransactions)
@@ -48,39 +51,20 @@ export async function getUserTransactions(userId: number): Promise<TokenTransact
 
 // Get the authenticated user from session cookies
 export async function getUser() {
-  const sessionCookie = (await cookies()).get('session');
-  if (!sessionCookie || !sessionCookie.value) {
+  const auth = await getAuth();
+  const session = await auth();
+  console.log("session", session);
+  if (!session || !session.user?.id) {
     return null;
   }
 
-  const sessionData = await verifyToken(sessionCookie.value);
-  if (
-    !sessionData ||
-    !sessionData.user ||
-    typeof sessionData.user.id !== 'number'
-  ) {
-    return null;
-  }
-
-  if (new Date(sessionData.expires) < new Date()) {
-    return null;
-  }
-
-  const user = await db
-    .select()
-    .from(users)
-    .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
-    .limit(1);
-
-  if (user.length === 0) {
-    return null;
-  }
-
-  return user[0];
+  // Get the user from the database using the session user ID
+  const user = await getUserById(session.user.id);
+  return user;
 }
 
 // Get user's token balance
-export async function getUserTokenBalance(userId: number) {
+export async function getUserTokenBalance(userId: string) {
   const result = await db
     .select({ tokenBalance: users.tokenBalance })
     .from(users)
@@ -90,15 +74,15 @@ export async function getUserTokenBalance(userId: number) {
   return result.length > 0 ? result[0].tokenBalance : 0;
 }
 
-export async function getUserById(userId: number): Promise<User | null> {
+export async function getUserById(userId: string): Promise<User | null> {
   const [user] = await db.select().from(users).where(eq(users.id, userId));
 
   return user || null;
 }
 export async function deductTokens(
-  userId: number,
+  userId: string,
   tokensRequired: number,
-  description: string = 'API request'
+  description: string = "API request"
 ) {
   await db.transaction(async (tx) => {
     // Attempt to deduct tokens atomically
@@ -107,23 +91,18 @@ export async function deductTokens(
       .set({
         tokenBalance: sql`token_balance - ${tokensRequired}`,
       })
-      .where(
-        and(
-          eq(users.id, userId),
-          sql`token_balance >= ${tokensRequired}`
-        )
-      )
+      .where(and(eq(users.id, userId), sql`token_balance >= ${tokensRequired}`))
       .returning({ tokenBalance: users.tokenBalance });
 
     if (result.length === 0) {
-      throw new Error('Insufficient tokens or user not found');
+      throw new Error("Insufficient tokens or user not found");
     }
 
     // Record the transaction
     await tx.insert(tokenTransactions).values({
       userId,
       amount: -tokensRequired,
-      type: 'deduction',
+      type: "deduction",
       description,
       createdAt: new Date(),
     });
@@ -132,9 +111,9 @@ export async function deductTokens(
 
 // Add tokens to the user's balance
 export async function addTokens(
-  userId: number,
+  userId: string,
   tokensToAdd: number,
-  description: string = 'Token purchase'
+  description: string = "Token purchase"
 ) {
   await db.transaction(async (tx) => {
     // Atomically add tokens
@@ -147,14 +126,14 @@ export async function addTokens(
       .returning({ tokenBalance: users.tokenBalance });
 
     if (result.length === 0) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     // Record the transaction
     await tx.insert(tokenTransactions).values({
       userId,
       amount: tokensToAdd,
-      type: 'purchase',
+      type: "purchase",
       description,
       createdAt: new Date(),
     });
@@ -162,7 +141,7 @@ export async function addTokens(
 }
 
 // Get token transaction history for a user
-export async function getTokenTransactions(userId: number) {
+export async function getTokenTransactions(userId: string) {
   return await db
     .select()
     .from(tokenTransactions)
@@ -171,7 +150,7 @@ export async function getTokenTransactions(userId: number) {
 }
 
 // Get all active API keys for a user
-export async function getApiKeys(userId: number): Promise<ApiKey[]> {
+export async function getApiKeys(userId: string): Promise<ApiKey[]> {
   const keys = await db
     .select({
       id: apiKeys.id,
@@ -182,14 +161,13 @@ export async function getApiKeys(userId: number): Promise<ApiKey[]> {
       status: apiKeys.status,
     })
     .from(apiKeys)
-    .where(and(eq(apiKeys.userId, userId), eq(apiKeys.status, 'active')));
+    .where(and(eq(apiKeys.userId, userId), eq(apiKeys.status, "active")));
 
   return keys;
 }
 
-
 // Create a new API key for a user
-export async function createApiKey(userId: number): Promise<ApiKey> {
+export async function createApiKey(userId: string): Promise<ApiKey> {
   const newKey = generateApiKey();
 
   const [apiKey] = await db
@@ -197,7 +175,7 @@ export async function createApiKey(userId: number): Promise<ApiKey> {
     .values({
       userId,
       key: newKey,
-      status: 'active',
+      status: "active",
       createdAt: new Date(),
     })
     .returning({
@@ -213,13 +191,9 @@ export async function createApiKey(userId: number): Promise<ApiKey> {
 }
 
 // Revoke an API key
-export async function revokeApiKey(userId: number, apiKeyId: number) {
+export async function revokeApiKey(userId: string, apiKeyId: string) {
   await db
     .update(apiKeys)
-    .set({ status: 'revoked' })
+    .set({ status: "revoked" })
     .where(and(eq(apiKeys.userId, userId), eq(apiKeys.id, apiKeyId)));
 }
-
-// Get activity logs for a user
-
-// Record an activity log

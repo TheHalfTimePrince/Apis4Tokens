@@ -8,7 +8,7 @@ import {
   users,
   type NewUser,
 } from '@/lib/db/schema';
-import { comparePasswords, hashPassword, setSession } from '@/lib/auth/session';
+import { comparePasswords, hashPassword } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { getUser } from '@/lib/db/queries';
@@ -16,21 +16,26 @@ import {
   validatedAction,
   validatedActionWithUser,
 } from '@/lib/auth/middleware';
+import { getSignIn } from '@/auth';
+import { AuthError } from "next-auth";
+import { ActionState } from "@/lib/auth/middleware";
 
-// Sign In Schema and Function
+// Sign In Schema and use
 const signInSchema = z.object({
   email: z.string().email().min(3).max(255),
   password: z.string().min(8).max(100),
 });
 
-export const signIn = validatedAction(signInSchema, async (data) => {
-  const { email, password } = data;
+
+
+export const getUserFromCredentials = async (credentials: { email: string, password: string }) => {
+  const { email, password } = credentials;
 
   const [foundUser] = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  .select()
+  .from(users)
+  .where(eq(users.email, email))
+  .limit(1);
 
   if (!foundUser) {
     return { error: 'Invalid email or password. Please try again.' };
@@ -45,12 +50,11 @@ export const signIn = validatedAction(signInSchema, async (data) => {
     return { error: 'Invalid email or password. Please try again.' };
   }
 
-  await setSession(foundUser);
+  return foundUser ?? null;
+};
 
-  redirect('/dashboard');
-});
 
-// Sign Up Schema and Function
+
 const signUpSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
@@ -84,7 +88,13 @@ export const signUp = validatedAction(signUpSchema, async (data) => {
     return { error: 'Failed to create user. Please try again.' };
   }
 
-  await setSession(createdUser);
+  const signIn = await getSignIn();
+
+  await signIn('credentials', {
+    email: createdUser.email,
+    password: password,
+    redirect: false,
+  });
 
   redirect('/dashboard');
 });
@@ -183,3 +193,35 @@ export const updateAccount = validatedActionWithUser(
     return { success: 'Account updated successfully.' };
   }
 );
+
+export async function signInWithProvider(providerId: string, redirectTo: string = "/dashboard") {
+  try {
+    const signIn = await getSignIn();
+    await signIn(providerId, {
+      redirectTo,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      console.error(error);
+    }
+    throw error;
+  }
+}
+
+export async function handleSignIn(state: ActionState, formData: FormData) {
+  try {
+    const signIn = await getSignIn();
+     await signIn("credentials", {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      redirect: false,
+    });
+    redirect('/dashboard')
+
+  } catch (error) {
+    if (error instanceof AuthError) {
+      console.error(error);
+    }
+    throw error;
+  }
+}
