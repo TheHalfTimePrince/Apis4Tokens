@@ -1,5 +1,5 @@
 "use server";
-import { desc, and, eq, isNull } from "drizzle-orm";
+import { desc, and, eq, isNull, sql } from "drizzle-orm";
 import { db } from "./drizzle";
 import {
   users,
@@ -10,26 +10,44 @@ import {
   TokenTransaction,
 } from "./schema";
 import { cookies } from "next/headers";
-
-import { createHmac, randomBytes } from "crypto";
-import { sql } from "drizzle-orm";
-import { getAuth } from "@/auth";
+import { auth } from "@/auth";
 // Function to generate a unique API key
-function generateApiKey(): string {
+async function generateApiKey(): Promise<string> {
   const prefix = "easyapis_secret_key";
 
   // Get the current timestamp
   const timestamp = Date.now().toString();
 
-  // Generate a 256-bit (32-byte) random value
-  const randomValue = randomBytes(32).toString("hex");
+  // Generate random bytes using Web Crypto API
+  const randomBytes = new Uint8Array(32);
+  crypto.getRandomValues(randomBytes);
+  const randomValue = Array.from(randomBytes)
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
 
   // Concatenate timestamp and random value
   const data = `${timestamp}${randomValue}`;
 
-  // Create an HMAC using SHA-256 and a secret key
+  // Create HMAC using Web Crypto API
   const secretKey = process.env.API_KEY_SECRET || "default_secret";
-  const hmac = createHmac("sha256", secretKey).update(data).digest("hex");
+  const encoder = new TextEncoder();
+  const keyData = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secretKey),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    keyData,
+    encoder.encode(data)
+  );
+
+  const hmac = Array.from(new Uint8Array(signature))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
 
   // Combine the prefix and the HMAC to form the API key
   const apiKey = `${prefix}_${hmac}`;
@@ -51,7 +69,7 @@ export async function getUserTransactions(
 
 // Get the authenticated user from session cookies
 export async function getUser() {
-  const auth = await getAuth();
+
   const session = await auth();
   console.log("session", session);
   if (!session || !session.user?.id) {
@@ -168,7 +186,7 @@ export async function getApiKeys(userId: string): Promise<ApiKey[]> {
 
 // Create a new API key for a user
 export async function createApiKey(userId: string): Promise<ApiKey> {
-  const newKey = generateApiKey();
+  const newKey = await generateApiKey();
 
   const [apiKey] = await db
     .insert(apiKeys)

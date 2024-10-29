@@ -16,7 +16,7 @@ import {
   validatedAction,
   validatedActionWithUser,
 } from '@/lib/auth/middleware';
-import { getSignIn } from '@/auth';
+import { signIn } from '@/auth';
 import { AuthError } from "next-auth";
 import { ActionState } from "@/lib/auth/middleware";
 
@@ -88,7 +88,6 @@ export const signUp = validatedAction(signUpSchema, async (data) => {
     return { error: 'Failed to create user. Please try again.' };
   }
 
-  const signIn = await getSignIn();
 
   await signIn('credentials', {
     email: createdUser.email,
@@ -196,7 +195,7 @@ export const updateAccount = validatedActionWithUser(
 
 export async function signInWithProvider(providerId: string, redirectTo: string = "/dashboard") {
   try {
-    const signIn = await getSignIn();
+
     await signIn(providerId, {
       redirectTo,
     });
@@ -210,7 +209,7 @@ export async function signInWithProvider(providerId: string, redirectTo: string 
 
 export async function handleSignIn(state: ActionState, formData: FormData) {
   try {
-    const signIn = await getSignIn();
+
      await signIn("credentials", {
       email: formData.get("email") as string,
       password: formData.get("password") as string,

@@ -60,7 +60,7 @@ export function Settings({ user }: { user: User }) {
   };
 
   // Handle API key revocation
-  const handleRevokeApiKey = async (apiKeyId: number) => {
+  const handleRevokeApiKey = async (apiKeyId: string) => {
     try {
       await revokeApiKey(user.id, apiKeyId);
       setApiKeys((prevKeys) => prevKeys.filter((key) => key.id !== apiKeyId));

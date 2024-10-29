@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     ppr: false,
     serverSourceMaps: false
   },
+
   productionBrowserSourceMaps: false, 
 };
 
