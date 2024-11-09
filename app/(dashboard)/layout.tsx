@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Home, LogOut,  User, BrainCircuit } from 'lucide-react';
+import { Server, Home, LogOut,  User } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,8 +31,8 @@ function Header() {
     <header className="sticky z-[5] top-0 left-0  bg-background  w-full backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <BrainCircuit className="h-6 w-6 text-primary" />
-          <span className="ml-2 text-xl font-semibold text-primary-background">AI Push</span>
+          <Server className="h-6 w-6 text-primary" />
+          <span className="ml-2 text-xl font-semibold text-primary-background">Apis4Tokens</span>
         </Link>
         <Link
             href="/docs/getting-started"

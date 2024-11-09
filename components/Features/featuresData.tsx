@@ -14,7 +14,7 @@ const featuresData: Feature[] = [
     ),
     title: "APIs Tailored for Developers",
     paragraph:
-      "AI Push offers endpoints like QR code generation, data conversion, and more, designed specifically for developers to integrate quickly and efficiently.",
+      "Apis4Tokens offers endpoints like QR code generation, data conversion, and more, designed specifically for developers to integrate quickly and efficiently.",
   },
   {
     id: 2,
