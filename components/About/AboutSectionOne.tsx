@@ -1,5 +1,7 @@
 import Image from "next/image";
 import SectionTitle from "../Common/SectionTitle";
+import { DrawToolbar } from "../draw-toolbar";
+import { Canvas } from "../canvas";
 
 const checkIcon = (
   <svg width="16" height="13" viewBox="0 0 16 13" className="fill-white">
@@ -8,7 +10,7 @@ const checkIcon = (
 );
 
 const AboutSectionOne = () => {
-  const List = ({ text }: {text:string}) => (
+  const List = ({ text }: { text: string }) => (
     <p className="mb-5 flex items-center text-lg font-medium text-body-color">
       <span className="mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md bg-primary bg-opacity-10 text-primary">
         {checkIcon}
@@ -18,14 +20,17 @@ const AboutSectionOne = () => {
   );
 
   return (
-    <section id="about" className="pt-16 md:pt-20 lg:pt-28 w-full px-4 max-w-screen-2xl">
+    <section
+      id="about"
+      className="pt-16 md:pt-20 lg:pt-28 w-full px-4 max-w-screen-2xl"
+    >
       <div className="container">
         <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
-                title="Built for Developers, Apis4Tokens for All Your Needs."
-                paragraph="Apis4Tokens delivers the tools you need to quickly integrate features like QR code generation, data conversion, and more into your applications. Simplify development with our ready-to-use solutions."
+                title="Built for Developers, AI Push for All Your Needs."
+                paragraph="AI Push delivers the tools you need to quickly integrate features like QR code generation, data conversion, and more into your applications. Simplify development with our ready-to-use solutions."
                 mb="44px"
               />
 
@@ -50,14 +55,8 @@ const AboutSectionOne = () => {
             </div>
 
             <div className="w-full px-4 lg:w-1/2">
-              <div className="relative mx-auto aspect-[25/24] max-w-[500px] lg:mr-0">
-                <Image
-                  src="/images/about/about-meditate.svg"
-                  alt="about-image"
-                  fill
-                  className="mx-auto max-w-full drop-shadow-three  lg:mr-0"
-                />
-              
+              <div className="relative mx-auto aspect-[25/24] max-w-[800px] lg:mr-0">
+                <Canvas Toolbar={DrawToolbar}/>
               </div>
             </div>
           </div>

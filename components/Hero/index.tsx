@@ -24,10 +24,10 @@ const Hero = () => {
             <div className="w-full px-16 md:px-4">
               <div className="mx-auto max-w-[800px] text-center">
                 <h1 className="mb-5 text-3xl font-bold leading-tight text-black  sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">
-                Apis4Tokens for Developers, Built to Scale 🚀
+                AI Push for Developers, Built to Scale 🚀
                 </h1>
                 <p className="mb-12 text-base !leading-relaxed text-neutral-900  sm:text-lg md:text-xl">
-                Apis4Tokens provides powerful endpoints like QR code generation and more. Pay for tokens, with each request costing tokens per use. Simplify your developer workflow with our scalable solutions.
+                AI Push provides powerful endpoints like QR code generation and more. Pay for tokens, with each request costing tokens per use. Simplify your developer workflow with our scalable solutions.
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                   <Link
